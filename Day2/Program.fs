@@ -23,7 +23,7 @@ let extractFromMatch (mat: Match) =
 
 [<EntryPoint>]
 let main argv =
-    let regexString = "(?<min>\d+)\-(?<max>\d+)\s(?<letter>[a-z]+)\:\s(?<password>[a-z]+)"
+    let regexString = "(?<min>\d+)\-(?<max>\d+)\s(?<letter>[a-z])\:\s(?<password>[a-z]+)"
     let matcher l = Regex.Match(l,regexString)
     let input = File.ReadAllLines("Z:/aoc/day2a")
     
