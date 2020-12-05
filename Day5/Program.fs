@@ -26,7 +26,7 @@ let homeInOn high low sequence =
         let mid = (top + bot) / 2
         match hiLo with
         | High -> (top,mid+1)
-        | Low -> (mid-1,bot)
+        | Low -> (mid,bot)
     
     let rec homeInOn' (hi,lo) (x::xs) =
         if xs = [] then
@@ -45,21 +45,16 @@ let parseInputLine s =
     (List.map convertRow (fst tupled),List.map convertCol (snd tupled))
 
 let findMySeat seatIds =
-    let first = (List.head seatIds,false)
-    List.fold (fun (acc,found) x -> if found then
-                                           (x,found)
-                                       else
-                                           if x <> (acc + 1) then
-                                                (x,true)
-                                           else
-                                                (x,false)) (first) seatIds
+    let min = List.min seatIds
+    let max = List.max seatIds
+    let all = [min..max]
+    List.find (fun x -> not (List.contains x seatIds)) all
 
 [<EntryPoint>]
 let main argv =
     let input = File.ReadAllLines("Z:/aoc/day5") |> Array.pMap (fun (s:string) -> s.Trim()) |> Array.toList
     let seatIDs = List.pMap (findSeatPosition << parseInputLine << Seq.toList) input
-                    |> List.map (fun (r,c) -> printfn "Row: %d Column: %d SeatID: %d" r c ((r * 8) + c)
-                                              (r * 8) + c)
+                    |> List.map (fun (r,c) -> (r * 8) + c)
     let uniqueSeatIDs = seatIDs
                         |> List.distinct
     
