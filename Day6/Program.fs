@@ -4,13 +4,13 @@ open System
 open System.IO
 open ParallelisationLibrary
 
-let union (seqList: seq<'a list>) =
-    let twoUnion lx ly =
+let intersection (seqList: seq<'a list>) =
+    let twoIntersection lx ly =
         match ly with
         | [] -> lx
         | _ -> (List.filter (fun x -> List.contains x lx) ly) @ (List.filter (fun x -> List.contains x ly) lx)
                |> List.distinct
-    Seq.reduce twoUnion seqList
+    Seq.reduce twoIntersection seqList
 
 let personQuestions (l:string) =
     l.Trim() |> Seq.toList |> List.distinct
@@ -18,7 +18,7 @@ let personQuestions (l:string) =
 let groupQuestions people =
     Array.pMap personQuestions people
     |> Array.toList
-    |> union
+    |> intersection
     |> List.length
 
 [<EntryPoint>]
